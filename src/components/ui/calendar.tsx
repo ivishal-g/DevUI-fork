@@ -190,7 +190,11 @@ function CalendarDayButton({
       ref={ref}
       variant="ghost"
       size="icon"
-      data-day={day.date.toLocaleDateString('en-US')} // Fixed locale to prevent hydration errors
+
+
+      // Use deterministic date format to fix hydration error
+      data-day={day.date.toISOString().split("T")[0]}
+
       data-selected-single={
         modifiers.selected &&
         !modifiers.range_start &&
