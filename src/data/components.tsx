@@ -35,6 +35,7 @@ import {
 } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
+import ChatBox from "@/components/ui/chat";
 
 
 
@@ -556,5 +557,17 @@ export function TextareaDemo() {
     </div>
   )
 }`
-    }
-  ]
+    },
+    {
+    id: "chat",
+    title: "Chat",
+    description: "Interactive chat demo with animations, theming and code snippet handling.",
+    category: "Widgets",
+    preview: <ChatBox header={{ title: "AI Assistant", subtitle: "Powered by DevUI " }} />,
+    code: `import ChatBox from "@/components/ui/chat"
+
+  export function ChatDemo() {
+    return <ChatBox header={{ title: "AI Assistant", subtitle: "Powered by DevUI " }} />
+  }`
+  }
+  ];
