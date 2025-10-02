@@ -1,0 +1,47 @@
+name: Vercel Preview Deployment
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  vercel-preview:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the PR code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # Install Vercel CLI
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      # Deploy to Vercel Preview
+      - name: Deploy to Vercel Preview
+        id: vercel
+        run: |
+          vercel --token ${{ secrets.VERCEL_TOKEN }} --confirm --prod=false
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      # Comment PR with the preview URL
+      - name: Comment PR with Preview URL
+        uses: peter-evans/create-or-update-comment@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            🚀 Preview Deployment is ready!  
+            [Preview Link](${{ steps.vercel.outputs.url }})
