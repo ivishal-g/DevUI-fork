@@ -33,6 +33,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import ChatBox from "@/components/ui/chat";
 
 
 export const componentsData = [
@@ -442,5 +443,17 @@ export function DialogDemo() {
     </Dialog>
   )
 }`
+    },
+    {
+      id: "chat",
+      title: "Chat",
+      description: "Interactive chat demo with animations, theming and code snippet handling.",
+      category: "Widgets",
+      preview: <ChatBox header={{ title: "AI Assistant", subtitle: "Powered by DevUI " }} />,
+      code: `import ChatDemo from "@/components/ui/chat"
+
+      export function ChatDemoWrapper() {
+        return <ChatBox />
+      }`
     }
-  ]
+]
