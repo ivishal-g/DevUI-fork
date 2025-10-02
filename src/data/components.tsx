@@ -500,10 +500,6 @@ export function DialogDemo() {
 }`
 
     },
-=======
-}`,
-  },
->>>>>>> upstream/main
   {
     id: "progress",
     title: "Progress",
@@ -859,4 +855,4 @@ export function MenuBarDemo() {
 }`,
   },
 ];
->>>>>>> upstream/main
+
