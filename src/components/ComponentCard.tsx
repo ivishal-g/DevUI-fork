@@ -167,7 +167,7 @@ export const ComponentCard = ({
                 </TabsContent>
 
                 <TabsContent value="code" className="p-4 sm:p-5 lg:p-6">
-                    <CodeBlock code={code} />
+                    <CodeBlock code={code} componentName={title} />
                 </TabsContent>
             </Tabs>
         </Card>
