@@ -952,9 +952,8 @@ export function DrawerDemo() {
       </DrawerContent>
     </Drawer>
   )
-}`,
+},
   },
-];
   {
     id: "file-upload",
     title: "File Upload",
