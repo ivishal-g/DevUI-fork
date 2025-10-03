@@ -527,7 +527,7 @@ export function DialogDemo() {
       </DialogContent>
     </Dialog>
   )
-}`
+}
 
     },
   {
