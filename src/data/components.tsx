@@ -527,8 +527,7 @@ export function DialogDemo() {
       </DialogContent>
     </Dialog>
   )
-}
-
+}`,
     },
   {
     id: "progress",
@@ -952,7 +951,7 @@ export function DrawerDemo() {
       </DrawerContent>
     </Drawer>
   )
-},
+}`,
   },
   {
     id: "file-upload",
