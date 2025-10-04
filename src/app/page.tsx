@@ -1,6 +1,6 @@
 "use client";
 import { useState, useMemo, useEffect } from "react";
-import { ComponentCard } from "@/components/ComponentCard";
+import { ComponentSnippetCard } from "@/components/ComponentSnippetCard";
 import { componentsData } from "@/data/components";
 // ❌ We are removing the Input component from here as it's moving to the Header
 import { Badge } from "@/components/ui/badge";
@@ -279,7 +279,7 @@ const Index = () => {
                       className="animate-fade-in"
                       style={{ animationDelay: `${index * 0.05}s` }}
                     >
-                      <ComponentCard {...component} highlightQuery={debouncedQuery} />
+                      <ComponentSnippetCard {...component} highlightQuery={debouncedQuery} />
                     </div>
                   );
                 })}
@@ -294,7 +294,7 @@ const Index = () => {
                       className="animate-fade-in"
                       style={{ animationDelay: `${index * 0.05}s` }}
                     >
-                      <ComponentCard {...component} highlightQuery={debouncedQuery} />
+                      <ComponentSnippetCard {...component} highlightQuery={debouncedQuery} />
                     </div>
                   );
                 })}
