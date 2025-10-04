@@ -4,9 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
-
 import { Input } from "@/components/ui/input"; 
-import { Input } from "@/components/ui/input"; // ✅ Import Input component
 import {
   Github,
   Menu,
@@ -18,26 +16,17 @@ import {
   BookOpen,
   Users,
   Star,
-
   Search,
 } from "lucide-react";
 
-  Search, // ✅ Import Search Icon
-} from "lucide-react";
-
-// ✅ Define the types for the new props
 interface HeaderProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
 }
 
-
 const Header = ({ searchQuery, setSearchQuery }: HeaderProps) => { 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false); 
-const Header = ({ searchQuery, setSearchQuery }: HeaderProps) => { // ✅ Accept props
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false); // ✅ State for search animation
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -55,8 +44,6 @@ const Header = ({ searchQuery, setSearchQuery }: HeaderProps) => { // ✅ Accept
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-
-  // When search opens, focus the input
   useEffect(() => {
     if (isSearchOpen && searchInputRef.current) {
       searchInputRef.current.focus();
@@ -68,15 +55,13 @@ const Header = ({ searchQuery, setSearchQuery }: HeaderProps) => { // ✅ Accept
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setIsMenuOpen(false);
-
         setIsSearchOpen(false); 
-        setIsSearchOpen(false); // ✅ Close search on escape
       }
     };
     window.addEventListener("keydown", handleEscape);
     return () => window.removeEventListener("keydown", handleEscape);
   }, []);
-  // Close mobile menu on navigation
+
   useEffect(() => {
     setIsMenuOpen(false);
   }, [pathname]);
