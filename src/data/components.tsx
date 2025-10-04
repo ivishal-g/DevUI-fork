@@ -61,7 +61,7 @@ import {
 import { FileUpload } from "@/components/ui/file-upload";
 // REMOVED: import React, { useState } from "react";
 // ADDED: Import the component that now correctly encapsulates useState:
-import { SliderDemo } from "@/components/ui/sliderDemo";
+
 import Accordion from "@/components/ui/Accordion";
 
 export const componentsData = [
