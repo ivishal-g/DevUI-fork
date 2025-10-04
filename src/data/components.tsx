@@ -59,6 +59,9 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { FileUpload } from "@/components/ui/file-upload";
+// REMOVED: import React, { useState } from "react";
+// ADDED: Import the component that now correctly encapsulates useState:
+import { SliderDemo } from "@/components/ui/sliderDemo";
 
 export const componentsData = [
   {
@@ -900,7 +903,8 @@ export function DrawerDemo() {
   {
     id: "file-upload",
     title: "File Upload",
-    description: "A versatile file upload component with drag & drop, progress tracking, and multiple variants.",
+    description:
+      "A versatile file upload component with drag & drop, progress tracking, and multiple variants.",
     category: "Form",
     preview: (
       <div className="w-full max-w-md space-y-4">
@@ -1009,5 +1013,65 @@ export function SonnerDemo() {
       { name: "message", type: "string", description: "Toast message.", required: true },
       { name: "description", type: "string", description: "Optional description.", default: "undefined" },
     ],
+  },
+
+];
+  {
+    id: "sonner",
+    title: "Sonner",
+    description:
+      "A toast notification system for displaying brief messages to users.",
+    category: "Feedback",
+    preview: (
+      <div className="flex justify-center gap-4">
+        <Button
+          onClick={() => {
+            toast("Hi there, I am Sonner! 👋");
+          }}
+        >
+          Show Toast
+        </Button>
+        <Button
+          variant="secondary"
+          onClick={() => {
+            toast.success("Success message!");
+          }}
+        >
+          Success
+        </Button>
+        <Button
+          variant="destructive"
+          onClick={() => {
+            toast.error("Something went wrong");
+          }}
+        >
+          Error
+        </Button>
+      </div>
+    ),
+    code: `import { toast } from "sonner"
+import { Button } from "@/components/ui/button"
+
+export function SonnerDemo() {
+  return (
+    <div className="flex gap-4">
+      <Button onClick={() => toast("Simple notification")}>
+        Show Toast
+      </Button>
+      <Button
+        variant="secondary"
+        onClick={() => toast.success("Success message!")}
+      >
+        Success
+      </Button>
+      <Button
+        variant="destructive"
+        onClick={() => toast.error("Something went wrong")}
+      >
+        Error
+      </Button>
+    </div>
+  )
+}`,
   },
 ];
