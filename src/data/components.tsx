@@ -1,3 +1,5 @@
+// src/data/components.tsx
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -57,6 +59,10 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { FileUpload } from "@/components/ui/file-upload";
+// REMOVED: import React, { useState } from "react";
+// ADDED: Import the component that now correctly encapsulates useState:
+import { SliderDemo } from "@/components/ui/sliderDemo";
 
 
 export const componentsData = [
@@ -166,16 +172,22 @@ export function SwitchDemo() {
     description:
       "An input where the user selects a value from within a given range.",
     category: "Form",
-    preview: (
-      <div className="w-full max-w-sm">
-        <Slider defaultValue={[50]} max={100} step={1} />
-      </div>
-    ),
+    // FIX: Using the separate functional component <SliderDemo />
+    preview: <SliderDemo />,
+
+    // Code snippet reflecting the correct controlled usage for users
     code: `import { Slider } from "@/components/ui/slider"
+import { useState } from "react"
 
 export function SliderDemo() {
+  const [value, setValue] = useState([50]);
   return (
-    <Slider defaultValue={[50]} max={100} step={1} />
+    <Slider 
+      value={value} 
+      onValueChange={setValue} 
+      max={100} 
+      step={1} 
+    />
   )
 }`,
   },
@@ -506,7 +518,6 @@ export function DialogDemo() {
       </DialogContent>
     </Dialog>
   )
-<<<<<<< HEAD
 }`
 
     },
@@ -707,7 +718,7 @@ export function ToastDemo() {
         </Button>
         <Toaster position="bottom-right" richColors closeButton />
     </div>
-}`,
+  )`,
   },
   {
     id: "sidebar",
@@ -743,8 +754,12 @@ export function ToastDemo() {
 import { Home, Settings, User } from 'lucide-react';
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ];
 =======
+=======
+];
+>>>>>>> upstream/main
 const navigationItems: MenuItem[] = [
   {
     id: 'home',
@@ -933,6 +948,141 @@ export function DrawerDemo() {
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
+  )
+}`,
+  },
+  {
+    id: "file-upload",
+    title: "File Upload",
+    description:
+      "A versatile file upload component with drag & drop, progress tracking, and multiple variants.",
+    category: "Form",
+    preview: (
+      <div className="w-full max-w-md space-y-4">
+        <FileUpload
+          variant="compact"
+          accept="image/*,.pdf,.doc,.docx"
+          multiple={true}
+          maxFiles={3}
+          maxSize={5 * 1024 * 1024} // 5MB
+          onFileSelect={(files) => console.log("Selected files:", files)}
+          onFileUpload={async (files) => {
+            // Simulate upload
+            console.log("Uploading files:", files);
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+          }}
+          showProgress={true}
+        />
+      </div>
+    ),
+    code: `import { FileUpload } from "@/components/ui/file-upload"
+
+export function FileUploadDemo() {
+  const handleFileSelect = (files: File[]) => {
+    console.log("Selected files:", files)
+  }
+
+  const handleFileUpload = async (files: File[]) => {
+    // Simulate upload process
+    console.log("Uploading files:", files)
+    await new Promise((resolve) => setTimeout(resolve, 2000))
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Compact Variant */}
+      <FileUpload
+        variant="compact"
+        accept="image/*,.pdf,.doc,.docx"
+        multiple={true}
+        maxFiles={3}
+        maxSize={5 * 1024 * 1024} // 5MB
+        onFileSelect={handleFileSelect}
+        onFileUpload={handleFileUpload}
+        showProgress={true}
+      />
+
+      {/* Default Dropzone Variant */}
+      <FileUpload
+        variant="default"
+        accept="image/*"
+        multiple={false}
+        maxSize={10 * 1024 * 1024} // 10MB
+        onFileSelect={handleFileSelect}
+        onFileUpload={handleFileUpload}
+      />
+
+      {/* Large Dropzone Variant */}
+      <FileUpload
+        variant="dropzone"
+        accept="*/*"
+        multiple={true}
+        maxFiles={5}
+        onFileSelect={handleFileSelect}
+      >
+        <p className="text-sm text-muted-foreground">
+          Drag and drop files here or click to browse
+        </p>
+      </FileUpload>
+    </div>
+  )
+}`,
+  },
+  {
+    id: "sonner",
+    title: "Sonner",
+    description:
+      "A toast notification system for displaying brief messages to users.",
+    category: "Feedback",
+    preview: (
+      <div className="flex justify-center gap-4">
+        <Button
+          onClick={() => {
+            toast("Hi there, I am Sonner! 👋");
+          }}
+        >
+          Show Toast
+        </Button>
+        <Button
+          variant="secondary"
+          onClick={() => {
+            toast.success("Success message!");
+          }}
+        >
+          Success
+        </Button>
+        <Button
+          variant="destructive"
+          onClick={() => {
+            toast.error("Something went wrong");
+          }}
+        >
+          Error
+        </Button>
+      </div>
+    ),
+    code: `import { toast } from "sonner"
+import { Button } from "@/components/ui/button"
+
+export function SonnerDemo() {
+  return (
+    <div className="flex gap-4">
+      <Button onClick={() => toast("Simple notification")}>
+        Show Toast
+      </Button>
+      <Button
+        variant="secondary"
+        onClick={() => toast.success("Success message!")}
+      >
+        Success
+      </Button>
+      <Button
+        variant="destructive"
+        onClick={() => toast.error("Something went wrong")}
+      >
+        Error
+      </Button>
+    </div>
   )
 }`,
   },

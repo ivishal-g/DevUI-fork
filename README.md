@@ -92,3 +92,15 @@ npm run dev
 
 **Hacktoberfest 2025:** Contribute, get PRs merged, and help us make **DevUI Components** the ultimate open-source component showcase!
 
+
+## 👥 Contributors
+
+Thanks to all the amazing contributors who make this project better! 💜
+
+<a href="https://github.com/fahimahammed/DevUI/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=fahimahammed/DevUI" />
+</a>
+
+<br>
+
+Contributions of any kind are welcome! 🎉
