@@ -63,6 +63,12 @@ import { FileUpload } from "@/components/ui/file-upload";
 // ADDED: Import the component that now correctly encapsulates useState:
 
 import Accordion from "@/components/ui/Accordion";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export const componentsData = [
   {
@@ -1017,7 +1023,8 @@ export function SonnerDemo() {
   {
     id: "accordion",
     title: "Accordion",
-    description: "A vertically stacked set of expandable panels that reveal hidden content.",
+    description:
+      "A vertically stacked set of expandable panels that reveal hidden content.",
     category: "Display",
     preview: <Accordion />,
     code: `import Accordion from "@/components/ui/Accordion"
@@ -1044,4 +1051,69 @@ export function AccordionDemo() {
 }`,
   },
 
+  {
+    id: "tooltip",
+    title: "Tooltip",
+    description:
+      "A popup that appears when hovering or focusing on an element, providing additional information.",
+    category: "Feedback",
+    preview: (
+      <div className="flex justify-center gap-6">
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button>Hover me</Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text-blue-600 text-xl">This is a tooltip</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="secondary">Info</Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text-red-600 text-xl">More info here</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
+    ),
+    code: `import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
+} from "@/components/ui/tooltip"
+import { Button } from "@/components/ui/button"
+export function TooltipDemo() {
+  return (
+    <div className="flex gap-6">
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button>Hover me</Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>This is a tooltip</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="secondary">Info</Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>More info here</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    </div>
+  )
+}`,
+  },
 ];
