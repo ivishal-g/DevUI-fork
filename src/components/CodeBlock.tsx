@@ -1,6 +1,8 @@
+/** biome-ignore-all lint/a11y/useSemanticElements: <explanation> */
+/** biome-ignore-all lint/a11y/noNoninteractiveTabindex: <explanation> */
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, KeyboardEvent } from "react";
 import { codeToHtml } from "shiki";
 import { Check, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -22,13 +24,20 @@ export const CodeBlock = ({
   showLineNumbers = true,
 }: CodeBlockProps) => {
   const [copied, setCopied] = useState(false);
-  const { logEvent } = useAnalytics(componentName || 'CodeBlock');
-  const { theme, resolvedTheme } = useTheme();
+  const { logEvent } = useAnalytics(componentName || "CodeBlock");
+  const { resolvedTheme } = useTheme();
   const [highlightedCode, setHighlightedCode] = useState<string>("");
   const [mounted, setMounted] = useState(false);
+  const [liveMessage, setLiveMessage] = useState<string>("");
+  const codeRegionRef = useRef<HTMLDivElement | null>(null);
 
-  // Calculate line count and create line numbers array
-  const lines = code.split('\n');
+  // ids for aria
+  const safeName = (componentName || "code-snippet").replace(/\s+/g, "-").toLowerCase();
+  const labelId = `${safeName}-label`;
+  const regionId = `${safeName}-region`;
+
+  // Calculate lines
+  const lines = code.split("\n");
   const lineCount = lines.length;
   const maxLineNumberWidth = lineCount.toString().length;
 
@@ -45,71 +54,98 @@ export const CodeBlock = ({
           theme,
         });
 
-        // If line numbers are enabled, process the HTML to add line number structure
         if (showLineNumbers) {
-          const processedHtml = addLineNumbersToHtml(html, lineCount);
+          const processedHtml = addLineNumbersToHtml(html);
           setHighlightedCode(processedHtml);
         } else {
           setHighlightedCode(html);
         }
       } catch (error) {
         console.error("Highlighting error:", error);
-        setHighlightedCode(`<pre><code>${code}</code></pre>`);
+        setHighlightedCode(`<pre><code>${escapeHtml(code)}</code></pre>`);
       }
     };
 
     generateHighlight();
-  }, [code, language, mounted, resolvedTheme, showLineNumbers, lineCount]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [code, language, mounted, resolvedTheme, showLineNumbers]);
 
-  // Function to add line numbers to the highlighted HTML
-  const addLineNumbersToHtml = (html: string, totalLines: number) => {
-    // Split HTML by newlines and add line number structure
-    const htmlLines = html.split('\n');
+  // Escape HTML fallback
+  const escapeHtml = (str: string) =>
+    str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+  // Add line numbers into the highlighted HTML - preserves HTML inside code
+  const addLineNumbersToHtml = (html: string) => {
+    // Extract code content between <code>...</code>
+    const codeMatch = html.match(/<code[^>]*>([\s\S]*?)<\/code>/);
     const preMatch = html.match(/<pre[^>]*>/);
-    const codeMatch = html.match(/<code[^>]*>/);
-    const preOpenTag = preMatch ? preMatch[0] : '<pre>';
-    const codeOpenTag = codeMatch ? codeMatch[0] : '<code>';
+    const preOpenTag = preMatch ? preMatch[0] : "<pre>";
+    const codeOpenTag = codeMatch?.[0]?.match(/^<code[^>]*>/)?.[0] ?? "<code>";
 
-    // Extract the content between <code> and </code>
-    const codeContent = html.match(/<code[^>]*>([\s\S]*?)<\/code>/)?.[1] || '';
-    const lines = codeContent.split('\n');
+    const codeContent = codeMatch?.[1] ?? "";
+    const contentLines = codeContent.split("\n");
 
-    // Wrap each line with line number data
-    const numberedLines = lines.map((line, index) => {
-      const lineNumber = index + 1;
-      return `<span class="code-line" data-line-number="${lineNumber}">${line}</span>`;
-    }).join('\n');
+    // Wrap each line in a span
+    const numberedLines = contentLines
+      .map((line, i) => {
+        const lineNumber = i + 1;
+        // Keep raw HTML for tokens (line can contain spans)
+        return `<span class="code-line" data-line-number="${lineNumber}">${line}</span>`;
+      })
+      .join("\n");
 
     return `${preOpenTag}${codeOpenTag}${numberedLines}</code></pre>`;
   };
 
+  // copy handler
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(code);
       setCopied(true);
-      logEvent('copy'); // Log the copy event with componentName
-      toast.success("Code copied to clipboard!", {
-        duration: 2000,
-      });
+      setLiveMessage("Code copied to clipboard");
+      logEvent("copy");
       toast.success("Code copied to clipboard!");
-      setTimeout(() => setCopied(false), 2000);
+      setTimeout(() => {
+        setCopied(false);
+        setLiveMessage("");
+      }, 1600);
     } catch (err) {
       toast.error("Failed to copy code");
+      setLiveMessage("Failed to copy code");
     }
   };
 
+  // Keyboard: Ctrl/Cmd+C when code region focused should copy
+  const onRegionKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    const isMac = navigator.platform.toUpperCase().includes("MAC");
+    const copyPressed = (isMac && e.metaKey && e.key === "c") || (!isMac && e.ctrlKey && e.key === "c");
+
+    if (copyPressed) {
+      e.preventDefault();
+      handleCopy();
+      return;
+    }
+
+    // allow usual navigation keys and not trap them
+    // (don't intercept ArrowUp/Down etc — code block is scrollable)
+  };
+
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-primary/20 bg-card/50 shadow-lg transition-all duration-300 hover:shadow-xl hover:border-primary/30">
-      {/* Header with primary color accents */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-primary/20 bg-gradient-to-r from-primary/5 to-primary/10">
+    <div
+      className="group relative overflow-hidden rounded-xl border border-primary/20 bg-card/50 shadow-lg transition-all duration-300 hover:shadow-xl hover:border-primary/30"
+    >
+      {/* Header */}
+      <div
+        id={labelId}
+        className="flex items-center justify-between px-4 py-3 border-b border-primary/20 bg-gradient-to-r from-primary/5 to-primary/10"
+      >
         <div className="flex items-center gap-3">
-          {/* VS Code style dots with primary color */}
-          <div className="flex gap-1.5">
+          <div className="flex gap-1.5" aria-hidden>
             <div className="w-3 h-3 rounded-full bg-primary/60" />
             <div className="w-3 h-3 rounded-full bg-primary/40" />
             <div className="w-3 h-3 rounded-full bg-primary/20" />
           </div>
-          {/* Language Label */}
+
           <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider font-semibold">
             {language}
           </span>
@@ -120,6 +156,8 @@ export const CodeBlock = ({
           size="sm"
           onClick={handleCopy}
           className="h-8 px-3 text-primary hover:bg-primary/10 hover:text-primary transition-all"
+          aria-label={componentName ? `Copy ${componentName} code` : "Copy code"}
+          title={componentName ? `Copy ${componentName} code` : "Copy code"}
         >
           {copied ? (
             <>
@@ -135,20 +173,26 @@ export const CodeBlock = ({
         </Button>
       </div>
 
-      {/* Code content with Shiki highlighting and logical line numbers */}
+      {/* Code region: focusable, labeled, supports Ctrl/Cmd+C */}
       <div
-        className="overflow-x-auto text-sm leading-relaxed relative"
-        style={{
-          fontFamily: "'Fira Code', 'JetBrains Mono', Consolas, monospace",
-        }}
+        id={regionId}
+        ref={codeRegionRef}
+        role="region"
+        aria-labelledby={labelId}
+        tabIndex={0}
+        onKeyDown={onRegionKeyDown}
+        className="overflow-x-auto text-sm leading-relaxed relative outline-none focus-visible:ring-4 focus-visible:ring-primary/25"
+        style={{ fontFamily: "'Fira Code', 'JetBrains Mono', Consolas, monospace" }}
       >
+        {/* decorative line numbers column - aria-hidden */}
         {showLineNumbers && (
           <div
+            aria-hidden="true"
             className="absolute left-0 top-0 flex flex-col py-4 px-2 text-right select-none pointer-events-none z-10"
             style={{
               width: `${Math.max(2.5, maxLineNumberWidth * 0.6 + 1)}rem`,
-              backgroundColor: 'transparent',
-              borderRight: '1px solid hsl(var(--primary) / 0.2)',
+              backgroundColor: "transparent",
+              borderRight: "1px solid hsl(var(--primary) / 0.2)",
             }}
           >
             {Array.from({ length: lineCount }, (_, i) => (
@@ -156,9 +200,9 @@ export const CodeBlock = ({
                 key={i + 1}
                 className="block text-xs leading-relaxed opacity-70 hover:opacity-100 transition-opacity"
                 style={{
-                  color: 'hsl(var(--primary) / 0.8)',
-                  lineHeight: '1.5',
-                  height: '1.5em',
+                  color: "hsl(var(--primary) / 0.8)",
+                  lineHeight: "1.5",
+                  height: "1.5em",
                 }}
               >
                 {i + 1}
@@ -167,23 +211,24 @@ export const CodeBlock = ({
           </div>
         )}
 
+        {/* highlighted HTML (dangerous, but from shiki) */}
         {highlightedCode ? (
           <div
             dangerouslySetInnerHTML={{ __html: highlightedCode }}
             className={`
               [&_pre]:!bg-transparent [&_pre]:!m-0 [&_pre]:py-4 [&_code]:!bg-transparent
-              ${showLineNumbers ? `[&_pre]:pl-[${Math.max(2.5, maxLineNumberWidth * 0.6 + 1) + 1}rem]` : '[&_pre]:px-4'}
+              ${showLineNumbers ? `[&_pre]:pl-[${Math.max(2.5, maxLineNumberWidth * 0.6 + 1) + 1}rem]` : "[&_pre]:px-4"}
             `}
             style={{
-              marginLeft: showLineNumbers ? `${Math.max(2.5, maxLineNumberWidth * 0.6 + 1)}rem` : '0',
-              paddingLeft: showLineNumbers ? '1rem' : '1rem',
+              marginLeft: showLineNumbers ? `${Math.max(2.5, maxLineNumberWidth * 0.6 + 1)}rem` : "0",
+              paddingLeft: showLineNumbers ? "1rem" : "1rem",
             }}
           />
         ) : (
           <pre
-            className={`py-4 text-muted-foreground ${showLineNumbers ? 'pl-16' : 'px-4'}`}
+            className={`py-4 text-muted-foreground ${showLineNumbers ? "pl-16" : "px-4"}`}
             style={{
-              marginLeft: showLineNumbers ? `${Math.max(2.5, maxLineNumberWidth * 0.6 + 1)}rem` : '0',
+              marginLeft: showLineNumbers ? `${Math.max(2.5, maxLineNumberWidth * 0.6 + 1)}rem` : "0",
             }}
           >
             <code>{code}</code>
@@ -191,7 +236,16 @@ export const CodeBlock = ({
         )}
       </div>
 
-      {/* Subtle primary color accent at bottom */}
+      {/* live region for screen readers */}
+      <div
+        aria-live="polite"
+        role="status"
+        className="sr-only"
+        // keep live message in DOM for SR
+      >
+        {liveMessage}
+      </div>
+
       <div className="h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
     </div>
   );

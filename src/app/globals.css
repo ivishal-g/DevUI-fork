@@ -126,44 +126,133 @@
 
 /* CSS Variables for Theme-Aware Colors */
 :root {
-  /* Light Theme Colors (e.g., matching a background of gray-50/100) */
   --skeleton-bg-start: #e5e7eb; /* gray-200 */
   --skeleton-bg-shimmer: #f3f4f6; /* gray-100 */
 }
 
 .dark {
-  /* Dark Theme Colors (e.g., matching a background of gray-900/800) */
   --skeleton-bg-start: #374151; /* gray-700 */
   --skeleton-bg-shimmer: #4b5563; /* gray-600 */
 }
 
-/* Base class applied to the skeleton element */
-.skeleton-shimmer {
-  /* Adjust color stops to be slightly wider for a smoother gradient */
-  background: linear-gradient(
-    90deg,
-    var(--skeleton-bg-start) 0%,
-    var(--skeleton-bg-shimmer) 20%,
-    var(--skeleton-bg-start) 40%,
-    var(--skeleton-bg-start) 100%
-  );
-  background-size: 200% 100%; /* Important for the movement effect */
-  animation: shimmer 1.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
-}
-
+/* Base styles (removed dangerous global selector) */
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+  html, body, #__next {
+    height: 100%;
   }
 
   body {
     @apply bg-background text-foreground;
-    /* Prevent horizontal overflow from button animations */
     overflow-x: hidden;
+  }
+
+  /* sensible default: hide focus outlines unless keyboard navigation triggers them */
+  :focus:not(:focus-visible) {
+    outline: none;
   }
 }
 
+/* Utilities & accessibility-focused rules */
 @layer utilities {
+  /* ==========================
+     Accessibility / Focus rules
+     ========================== */
+
+  /* Fallback simple variables */
+  :root {
+    --focus-ring-fallback: rgba(59,130,246,0.9);
+    --focus-ring-dark-fallback: rgba(125,211,252,0.9);
+  }
+
+  /* Prefer explicit token if available (fallback to above) */
+  :root {
+    --focus-ring: var(--focus-ring, var(--focus-ring-fallback));
+    --focus-ring-dark: var(--focus-ring-dark, var(--focus-ring-dark-fallback));
+  }
+
+  /* Better focus-visible defaults for common interactive elements */
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  [role="menuitem"]:focus-visible,
+  [role="tab"]:focus-visible,
+  [role="button"]:focus-visible,
+  [role="link"]:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--focus-ring);
+    border-radius: 0.375rem;
+  }
+
+  /* Dark mode: use the dark ring for contrast */
+  .dark button:focus-visible,
+  .dark a:focus-visible,
+  .dark input:focus-visible,
+  .dark select:focus-visible,
+  .dark textarea:focus-visible,
+  .dark [role="menuitem"]:focus-visible,
+  .dark [role="tab"]:focus-visible,
+  .dark [role="button"]:focus-visible,
+  .dark [role="link"]:focus-visible {
+    box-shadow: 0 0 0 3px var(--focus-ring-dark);
+  }
+
+  /* Stronger ring for primary interactive controls */
+  button[data-slot="menubar-trigger"]:focus-visible,
+  [data-slot="menubar-item"]:focus-visible,
+  [data-slot="tabs-trigger"]:focus-visible,
+  .btn-glow:focus-visible,
+  .code-copy-button:focus-visible,
+  [data-slot="code-copy"]:focus-visible {
+    box-shadow: 0 0 0 4px var(--focus-ring);
+  }
+
+  /* Ensure dialog close is strongly visible */
+  [aria-label="Close dialog"]:focus-visible,
+  [data-slot="dialog-close"]:focus-visible,
+  .DialogClose:focus-visible {
+    box-shadow: 0 0 0 4px var(--focus-ring);
+  }
+
+  /* Make focus rings appear above overlays if necessary */
+  :where([role="dialog"], [data-slot="menubar-content"], [data-slot="menubar-portal"]) :focus-visible {
+    z-index: 10001;
+  }
+
+  /* Small icon-only controls get a tighter ring */
+  .icon-focus:focus-visible {
+    box-shadow: 0 0 0 2px var(--focus-ring);
+    border-radius: 9999px;
+  }
+
+  /* Skip link visibility */
+  .skip-link:focus {
+    transform: translateY(0);
+    z-index: 9999;
+  }
+
+  /* Reduce motion for users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.001s !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001s !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Utility: visibly focusable element helper */
+  .visibly-focusable:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--focus-ring);
+  }
+
+  /* Fine tune for very small elements (icon-only, icon buttons) */
+  .icon-focus:focus-visible {
+    box-shadow: 0 0 0 2px var(--focus-ring);
+    border-radius: 9999px;
+  }
 
   /* Extra small breakpoint for very small screens */
   @media (min-width: 475px) {
@@ -205,7 +294,6 @@
     @apply gap-4 sm:gap-6 lg:gap-8;
   }
 
-  /* Responsive gap utilities */
   .gap-responsive-sm {
     @apply gap-2 sm:gap-3 lg:gap-4;
   }
@@ -288,7 +376,6 @@
     opacity: 0.15;
   }
 
-  /* Dark theme adjustments for glow */
   .dark .btn-glow:hover::before {
     opacity: 0.05;
   }
@@ -353,7 +440,7 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Focus visible for accessibility */
+/* Focus visible helper */
 .focus-ring:focus-visible {
   @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background;
 }
