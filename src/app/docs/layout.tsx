@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 export default function DocsLayout({
   children,
@@ -14,6 +14,7 @@ export default function DocsLayout({
             <li><a href="#installation" className="hover:text-blue-500">Installation</a></li>
             <li><a href="#project-setup" className="hover:text-blue-500">Project Setup</a></li>
             <li><a href="#usage-examples" className="hover:text-blue-500">Usage Examples</a></li>
+            <li><a href="#AI-snippets" className="hover:text-blue-500">Ai snippets</a></li>
           </ul>
         </nav>
       </aside>
