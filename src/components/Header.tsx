@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input"; // ✅ Import Input component
+import { Input } from "@/components/ui/input"; 
 import {
   Github,
   Menu,
@@ -16,37 +16,34 @@ import {
   BookOpen,
   Users,
   Star,
-  Search, // ✅ Import Search Icon
+  Search,
 } from "lucide-react";
 
-// ✅ Define the types for the new props
 interface HeaderProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
 }
 
-const Header = ({ searchQuery, setSearchQuery }: HeaderProps) => { // ✅ Accept props
+const Header = ({ searchQuery, setSearchQuery }: HeaderProps) => { 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false); // ✅ State for search animation
+  const [isSearchOpen, setIsSearchOpen] = useState(false); 
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Prevent hydration mismatch
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
   const navigation = [
     { name: "Home", href: "/", icon: Home },
-    { name: "Components", href: "#components", icon: Code2 },
     { name: "About", href: "/about", icon: Users },
-    { name: "Docs", href: "#docs", icon: BookOpen },
+    { name: "Components", href: "#components", icon: Code2 },
+    { name: "Docs", href: "/docs", icon: BookOpen },
     { name: "Analytics", href: "/analytics", icon: Star },
   ];
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-  // When search opens, focus the input
   useEffect(() => {
     if (isSearchOpen && searchInputRef.current) {
       searchInputRef.current.focus();
@@ -58,14 +55,13 @@ const Header = ({ searchQuery, setSearchQuery }: HeaderProps) => { // ✅ Accept
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setIsMenuOpen(false);
-        setIsSearchOpen(false); // ✅ Close search on escape
+        setIsSearchOpen(false); 
       }
     };
     window.addEventListener("keydown", handleEscape);
     return () => window.removeEventListener("keydown", handleEscape);
   }, []);
 
-  // Close mobile menu on navigation
   useEffect(() => {
     setIsMenuOpen(false);
   }, [pathname]);
