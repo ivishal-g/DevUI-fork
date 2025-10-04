@@ -6,7 +6,6 @@ import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 
 import { Input } from "@/components/ui/input"; 
-=======
 import { Input } from "@/components/ui/input"; // ✅ Import Input component
 import {
   Github,
