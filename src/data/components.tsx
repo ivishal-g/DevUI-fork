@@ -38,7 +38,6 @@ import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
 import ChatBox from "@/components/ui/chat";
 import { toast } from "sonner";
-import { SidebarDemo } from "@/components/SidebarDemo";
 import Link from "next/link";
 import {
   Menubar,
