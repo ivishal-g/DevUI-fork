@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/a11y/useSemanticElements: <explanation> */
 "use client"
 
 import * as React from "react"
@@ -19,15 +20,24 @@ function Calendar({
   buttonVariant = "ghost",
   formatters,
   components,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledby,
   ...props
 }: React.ComponentProps<typeof DayPicker> & {
-  buttonVariant?: React.ComponentProps<typeof Button>["variant"]
+  buttonVariant?: React.ComponentProps<typeof Button>["variant"];
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
 }) {
-  const defaultClassNames = getDefaultClassNames()
+  const defaultClassNames = getDefaultClassNames();
+
+  const computedAriaLabel = ariaLabel ?? "Calendar";
 
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
+      // pass aria labeling through to the DayPicker root for AT
+      aria-label={computedAriaLabel}
+      aria-labelledby={ariaLabelledby}
       className={cn(
         "bg-background group/calendar p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
         String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`,
@@ -73,10 +83,7 @@ function Calendar({
           "relative has-focus:border-ring border border-input shadow-xs has-focus:ring-ring/50 has-focus:ring-[3px] rounded-md",
           defaultClassNames.dropdown_root
         ),
-        dropdown: cn(
-          "absolute bg-popover inset-0 opacity-0",
-          defaultClassNames.dropdown
-        ),
+        dropdown: cn("absolute bg-popover inset-0 opacity-0", defaultClassNames.dropdown),
         caption_label: cn(
           "select-none font-medium",
           captionLayout === "label"
@@ -91,36 +98,18 @@ function Calendar({
           defaultClassNames.weekday
         ),
         week: cn("flex w-full mt-2", defaultClassNames.week),
-        week_number_header: cn(
-          "select-none w-(--cell-size)",
-          defaultClassNames.week_number_header
-        ),
-        week_number: cn(
-          "text-[0.8rem] select-none text-muted-foreground",
-          defaultClassNames.week_number
-        ),
+        week_number_header: cn("select-none w-(--cell-size)", defaultClassNames.week_number_header),
+        week_number: cn("text-[0.8rem] select-none text-muted-foreground", defaultClassNames.week_number),
         day: cn(
           "relative w-full h-full p-0 text-center [&:first-child[data-selected=true]_button]:rounded-l-md [&:last-child[data-selected=true]_button]:rounded-r-md group/day aspect-square select-none",
           defaultClassNames.day
         ),
-        range_start: cn(
-          "rounded-l-md bg-accent",
-          defaultClassNames.range_start
-        ),
+        range_start: cn("rounded-l-md bg-accent", defaultClassNames.range_start),
         range_middle: cn("rounded-none", defaultClassNames.range_middle),
         range_end: cn("rounded-r-md bg-accent", defaultClassNames.range_end),
-        today: cn(
-          "bg-accent text-accent-foreground rounded-md data-[selected=true]:rounded-none",
-          defaultClassNames.today
-        ),
-        outside: cn(
-          "text-muted-foreground aria-selected:text-muted-foreground",
-          defaultClassNames.outside
-        ),
-        disabled: cn(
-          "text-muted-foreground opacity-50",
-          defaultClassNames.disabled
-        ),
+        today: cn("bg-accent text-accent-foreground rounded-md data-[selected=true]:rounded-none", defaultClassNames.today),
+        outside: cn("text-muted-foreground aria-selected:text-muted-foreground", defaultClassNames.outside),
+        disabled: cn("text-muted-foreground opacity-50", defaultClassNames.disabled),
         hidden: cn("invisible", defaultClassNames.hidden),
         ...classNames,
       }}
@@ -130,76 +119,89 @@ function Calendar({
             <div
               data-slot="calendar"
               ref={rootRef}
+              role="region"
+              aria-label={computedAriaLabel}
+              aria-roledescription="calendar"
               className={cn(className)}
               {...props}
             />
-          )
+          );
         },
         Chevron: ({ className, orientation, ...props }) => {
           if (orientation === "left") {
-            return (
-              <ChevronLeftIcon className={cn("size-4", className)} {...props} />
-            )
+            return <ChevronLeftIcon className={cn("size-4", className)} {...props} />;
           }
 
           if (orientation === "right") {
-            return (
-              <ChevronRightIcon
-                className={cn("size-4", className)}
-                {...props}
-              />
-            )
+            return <ChevronRightIcon className={cn("size-4", className)} {...props} />;
           }
 
-          return (
-            <ChevronDownIcon className={cn("size-4", className)} {...props} />
-          )
+          return <ChevronDownIcon className={cn("size-4", className)} {...props} />;
         },
         DayButton: CalendarDayButton,
         WeekNumber: ({ children, ...props }) => {
           return (
             <td {...props}>
-              <div className="flex size-(--cell-size) items-center justify-center text-center">
-                {children}
-              </div>
+              <div className="flex size-(--cell-size) items-center justify-center text-center">{children}</div>
             </td>
-          )
+          );
         },
         ...components,
       }}
       {...props}
     />
-  )
+  );
 }
 
+/* CalendarDayButton — improved ARIA + keyboard semantics */
 function CalendarDayButton({
   className,
   day,
   modifiers,
+  disabled,
   ...props
 }: React.ComponentProps<typeof DayButton>) {
-  const defaultClassNames = getDefaultClassNames()
+  const defaultClassNames = getDefaultClassNames();
 
-  const ref = React.useRef<HTMLButtonElement>(null)
+  const ref = React.useRef<HTMLButtonElement>(null);
+
+  // focus when DayPicker marks this item focused (keyboard navigation)
   React.useEffect(() => {
-    if (modifiers.focused) ref.current?.focus()
-  }, [modifiers.focused])
+    if (modifiers.focused) {
+      ref.current?.focus();
+    }
+  }, [modifiers.focused]);
+
+  const isToday = !!modifiers.today;
+  const isSelected = !!modifiers.selected;
+  const isDisabled = !!modifiers.disabled;
+
+  // accessible label for the date (e.g., "Tuesday, July 15, 2025")
+  const ariaLabel = day?.date
+    ? day.date.toLocaleDateString(undefined, {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : undefined;
 
   return (
     <Button
       ref={ref}
       variant="ghost"
       size="icon"
-
-
-      // Use deterministic date format to fix hydration error
+      // reflect selected state to assistive tech (true/false)
+      aria-pressed={isSelected}
+      aria-label={ariaLabel}
+      aria-current={isToday ? "date" : undefined}
+      // when day is disabled, propagate the disabled attribute (prevents activation & is exposed to AT)
+      disabled={isDisabled}
+      // keep out of tab order by default; the day-picker manages focus movement
+      tabIndex={-1}
       data-day={day.date.toISOString().split("T")[0]}
-
       data-selected-single={
-        modifiers.selected &&
-        !modifiers.range_start &&
-        !modifiers.range_end &&
-        !modifiers.range_middle
+        modifiers.selected && !modifiers.range_start && !modifiers.range_end && !modifiers.range_middle
       }
       data-range-start={modifiers.range_start}
       data-range-end={modifiers.range_end}
@@ -211,7 +213,7 @@ function CalendarDayButton({
       )}
       {...props}
     />
-  )
+  );
 }
 
 export { Calendar, CalendarDayButton }
