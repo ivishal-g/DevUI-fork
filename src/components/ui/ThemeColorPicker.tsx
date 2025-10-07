@@ -42,6 +42,40 @@ const ThemeColorPicker = () => {
     }
   }, []);
 
+  // Close on outside click
+  useEffect(() => {
+    const onDown = (e: MouseEvent) => {
+      if (!open) return;
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (!open) return;
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  // When opening, detect viewport overflow and flip alignment if needed
+  useEffect(() => {
+    if (!open) return;
+    const el = menuRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const viewportRight = window.innerWidth - 8; // 8px safe padding
+    if (rect.right > viewportRight) {
+      setAlignLeft(true);
+    } else {
+      setAlignLeft(false);
+    }
+  }, [open]);
+
   // Close on outside click or Escape key
   useEffect(() => {
     const onDown = (e: MouseEvent) => {
@@ -97,19 +131,9 @@ const ThemeColorPicker = () => {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 z-50" ref={containerRef}>
-      <div className="relative">
-        <div
-          ref={menuRef}
-          className={`absolute bottom-full ${
-            alignLeft ? "left-0 right-auto" : "right-0 left-auto"
-          } mb-3 flex items-center gap-2 rounded-xl border bg-background/90 p-2 backdrop-blur-md shadow-lg transition-all duration-200 origin-bottom-right overflow-visible min-w-max ${
-            alignLeft ? "translate-x-[4px]" : "translate-x-[-4px]"
-          } ${open ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}`}
-          role="menu"
-          aria-label="Theme colors"
-          id="theme-color-menu"
-        >
+    <div className="fixed bottom-4 right-4 z-50">
+      <div className="group relative">
+        <div className="absolute bottom-full right-0 mb-4 grid grid-cols-5 gap-2 rounded-lg border bg-background/80 p-2 backdrop-blur-md opacity-0 transition-all duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
           {themes.map((theme) => (
             <button
               key={theme.name}
@@ -126,15 +150,7 @@ const ThemeColorPicker = () => {
             />
           ))}
         </div>
-        <Button
-          variant="outline"
-          size="icon"
-          className="h-12 w-12 rounded-full shadow-lg"
-          aria-haspopup="menu"
-          aria-expanded={open}
-          aria-controls="theme-color-menu"
-          onClick={() => setOpen((prev) => !prev)}
-        >
+        <Button variant="outline" size="icon" className="h-12 w-12 rounded-full shadow-lg">
           <Paintbrush className="h-6 w-6" />
           <span className="sr-only">Change Theme Color</span>
         </Button>

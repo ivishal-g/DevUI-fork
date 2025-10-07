@@ -312,6 +312,7 @@ export function ${title}Demo() {
               className={`w-full flex items-center justify-center p-8 rounded-xl border-2 border-dashed border-border/50 ${
                 isDark ? "bg-zinc-900/30" : "bg-zinc-50"
               } hover:border-border transition-colors`}
+              suppressHydrationWarning
             >
               {mounted ? (
                 <div className="scale-[0.85] sm:scale-[0.9] lg:scale-100 origin-center max-w-full">
@@ -330,21 +331,19 @@ export function ${title}Demo() {
                 <h4 className="text-sm font-medium text-foreground mb-2">Copy Code</h4>
                 <CodeBlock code={snippet} componentName={title} language="tsx" />
               </div>
-              {variations.length > 1 && (
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {variations.map((variant) => (
-                    <Button
-                      key={variant}
-                      variant={variation === variant ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setVariation(variant as typeof variation)}
-                      className="capitalize"
-                    >
-                      {variant.replace(/([A-Z])/g, " $1").trim()}
-                    </Button>
-                  ))}
-                </div>
-              )}
+              <div className="flex flex-wrap gap-2">
+                {variations.map((variant) => (
+                  <Button
+                    key={variant}
+                    variant={variation === variant ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setVariation(variant as typeof variation)}
+                    className="capitalize"
+                  >
+                    {variant.replace(/([A-Z])/g, " $1").trim()}
+                  </Button>
+                ))}
+              </div>
             </div>
           )}
         </TabsContent>
