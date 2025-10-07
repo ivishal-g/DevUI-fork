@@ -313,10 +313,20 @@ export function ${title}Demo() {
               className={`w-full flex items-center justify-center p-8 rounded-xl border-2 border-dashed border-border/50 ${
                 isDark ? "bg-zinc-900/30" : "bg-zinc-50"
               } hover:border-border transition-colors`}
+<<<<<<< HEAD
             >
               <div className="scale-[0.85] sm:scale-[0.9] lg:scale-100 origin-center max-w-full">
                 {preview}
               </div>
+=======
+              suppressHydrationWarning
+            >
+              {mounted ? (
+                <div className="scale-[0.85] sm:scale-[0.9] lg:scale-100 origin-center max-w-full">
+                  {preview}
+                </div>
+              ) : null}
+>>>>>>> upstream/main
             </div>
           )}
         </TabsContent>
@@ -324,12 +334,19 @@ export function ${title}Demo() {
           {loading ? (
             <Skeleton width="100%" height="200px" className={isDark ? "bg-zinc-700" : "bg-zinc-200"} />
           ) : (
+<<<<<<< HEAD
             <div>
               <div className="mb-4 p-3 bg-secondary/30 rounded-lg border border-border">
                 <h4 className="text-sm font-medium text-foreground mb-2">Copy Code</h4>
                 <CodeBlock code={snippet} componentName={title} language="tsx" />
               </div>
               <div className="flex flex-wrap gap-2">
+=======
+            <div className="mb-4 p-3 bg-secondary/30 rounded-lg border border-border">
+              <h4 className="text-sm font-medium text-foreground mb-2">Copy Code</h4>
+              <CodeBlock code={snippet} componentName={title} language="tsx" />
+              <div className="flex flex-wrap gap-2 mt-4">
+>>>>>>> upstream/main
                 {variations.map((variant) => (
                   <Button
                     key={variant}
