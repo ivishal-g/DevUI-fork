@@ -314,10 +314,14 @@ export function ${title}Demo() {
                 isDark ? "bg-zinc-900/30" : "bg-zinc-50"
               } hover:border-border transition-colors`}
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
             >
               <div className="scale-[0.85] sm:scale-[0.9] lg:scale-100 origin-center max-w-full">
                 {preview}
               </div>
+<<<<<<< HEAD
 =======
               suppressHydrationWarning
             >
@@ -327,6 +331,8 @@ export function ${title}Demo() {
                 </div>
               ) : null}
 >>>>>>> upstream/main
+=======
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
             </div>
           )}
         </TabsContent>
@@ -335,18 +341,24 @@ export function ${title}Demo() {
             <Skeleton width="100%" height="200px" className={isDark ? "bg-zinc-700" : "bg-zinc-200"} />
           ) : (
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
             <div>
               <div className="mb-4 p-3 bg-secondary/30 rounded-lg border border-border">
                 <h4 className="text-sm font-medium text-foreground mb-2">Copy Code</h4>
                 <CodeBlock code={snippet} componentName={title} language="tsx" />
               </div>
               <div className="flex flex-wrap gap-2">
+<<<<<<< HEAD
 =======
             <div className="mb-4 p-3 bg-secondary/30 rounded-lg border border-border">
               <h4 className="text-sm font-medium text-foreground mb-2">Copy Code</h4>
               <CodeBlock code={snippet} componentName={title} language="tsx" />
               <div className="flex flex-wrap gap-2 mt-4">
 >>>>>>> upstream/main
+=======
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
                 {variations.map((variant) => (
                   <Button
                     key={variant}

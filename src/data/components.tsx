@@ -1,8 +1,12 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
-import { Slider } from "@/components/ui/slider";
+import { SliderDemo } from "@/components/ui/sliderDemo";
 import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -57,6 +61,12 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { FileUpload } from "@/components/ui/file-upload";
+<<<<<<< HEAD
+=======
+// REMOVED: import React, { useState } from "react";
+// ADDED: Import the component that now correctly encapsulates useState:
+
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
 import Accordion from "@/components/ui/Accordion";
 import {
   Tooltip,
@@ -92,6 +102,7 @@ export function ButtonDemo() {
   )
 }`,
     propsData: [
+<<<<<<< HEAD
       {
         name: "variant",
         type: '"default" | "secondary" | "outline" | "destructive"',
@@ -104,6 +115,10 @@ export function ButtonDemo() {
         description: "Button size.",
         default: "default",
       },
+=======
+      { name: "variant", type: '"default" | "secondary" | "outline" | "destructive"', description: "Button style variant.", default: "default" },
+      { name: "size", type: '"sm" | "default" | "lg"', description: "Button size.", default: "default" },
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
     ],
   },
   {
@@ -128,6 +143,7 @@ export function InputDemo() {
   )
 }`,
     propsData: [
+<<<<<<< HEAD
       {
         name: "type",
         type: "string",
@@ -140,6 +156,10 @@ export function InputDemo() {
         description: "Placeholder text.",
         default: "",
       },
+=======
+      { name: "type", type: "string", description: "Input type (e.g., text, email, password).", default: "text" },
+      { name: "placeholder", type: "string", description: "Placeholder text.", default: "" },
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
     ],
   },
   {
@@ -168,12 +188,16 @@ export function BadgeDemo() {
   )
 }`,
     propsData: [
+<<<<<<< HEAD
       {
         name: "variant",
         type: '"default" | "secondary" | "destructive" | "outline"',
         description: "Badge style variant.",
         default: "default",
       },
+=======
+      { name: "variant", type: '"default" | "secondary" | "destructive" | "outline"', description: "Badge style variant.", default: "default" },
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
     ],
   },
   {
@@ -200,6 +224,7 @@ export function SwitchDemo() {
   )
 }`,
     propsData: [
+<<<<<<< HEAD
       {
         name: "checked",
         type: "boolean",
@@ -212,6 +237,10 @@ export function SwitchDemo() {
         description: "Unique identifier for the switch.",
         required: true,
       },
+=======
+      { name: "checked", type: "boolean", description: "Switch state.", default: "false" },
+      { name: "id", type: "string", description: "Unique identifier for the switch.", required: true },
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
     ],
   },
   {
@@ -219,6 +248,7 @@ export function SwitchDemo() {
     title: "Slider",
     description: "An input where the user selects a value from within a given range.",
     category: "Form",
+<<<<<<< HEAD
     preview: (
       <Slider
         value={[50]}
@@ -227,6 +257,9 @@ export function SwitchDemo() {
         className="w-full max-w-sm"
       />
     ),
+=======
+    preview: <SliderDemo />,
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
     code: `import { Slider } from "@/components/ui/slider"
 import { useState } from "react"
 
@@ -242,6 +275,7 @@ export function SliderDemo() {
   )
 }`,
     propsData: [
+<<<<<<< HEAD
       {
         name: "value",
         type: "number[]",
@@ -266,6 +300,12 @@ export function SliderDemo() {
         description: "Step size.",
         default: "1",
       },
+=======
+      { name: "value", type: "number[]", description: "Current value(s) of the slider.", required: true },
+      { name: "onValueChange", type: "(value: number[]) => void", description: "Callback for value changes.", required: true },
+      { name: "max", type: "number", description: "Maximum value.", default: "100" },
+      { name: "step", type: "number", description: "Step size.", default: "1" },
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
     ],
   },
   {
@@ -294,6 +334,7 @@ export function CalendarDemo() {
   )
 }`,
     propsData: [
+<<<<<<< HEAD
       {
         name: "mode",
         type: '"single" | "multiple" | "range"',
@@ -312,6 +353,11 @@ export function CalendarDemo() {
         description: "Callback for date selection.",
         default: "undefined",
       },
+=======
+      { name: "mode", type: '"single" | "multiple" | "range"', description: "Selection mode.", default: "single" },
+      { name: "selected", type: "Date | Date[] | undefined", description: "Selected date(s).", default: "undefined" },
+      { name: "onSelect", type: "(date: Date | Date[] | undefined) => void", description: "Callback for date selection.", default: "undefined" },
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
     ],
   },
   {
@@ -338,6 +384,7 @@ export function CheckboxDemo() {
   )
 }`,
     propsData: [
+<<<<<<< HEAD
       {
         name: "checked",
         type: "boolean",
@@ -350,6 +397,10 @@ export function CheckboxDemo() {
         description: "Unique identifier for the checkbox.",
         required: true,
       },
+=======
+      { name: "checked", type: "boolean", description: "Checkbox state.", default: "false" },
+      { name: "id", type: "string", description: "Unique identifier for the checkbox.", required: true },
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
     ],
   },
   {
@@ -412,6 +463,7 @@ export function AlertDialogDemo() {
   )
 }`,
     propsData: [
+<<<<<<< HEAD
       {
         name: "open",
         type: "boolean",
@@ -424,6 +476,10 @@ export function AlertDialogDemo() {
         description: "Callback for open state changes.",
         default: "undefined",
       },
+=======
+      { name: "open", type: "boolean", description: "Controls dialog visibility.", required: true },
+      { name: "onOpenChange", type: "(open: boolean) => void", description: "Callback for open state changes.", default: "undefined" },
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
     ],
   },
   {
@@ -472,6 +528,7 @@ export function SelectDemo() {
   )
 }`,
     propsData: [
+<<<<<<< HEAD
       {
         name: "value",
         type: "string",
@@ -484,6 +541,10 @@ export function SelectDemo() {
         description: "Callback for value changes.",
         default: "undefined",
       },
+=======
+      { name: "value", type: "string", description: "Selected value.", default: "undefined" },
+      { name: "onValueChange", type: "(value: string) => void", description: "Callback for value changes.", default: "undefined" },
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
     ],
   },
   {
@@ -584,6 +645,7 @@ export function DialogDemo() {
   )
 }`,
     propsData: [
+<<<<<<< HEAD
       {
         name: "open",
         type: "boolean",
@@ -596,6 +658,10 @@ export function DialogDemo() {
         description: "Callback for open state changes.",
         default: "undefined",
       },
+=======
+      { name: "open", type: "boolean", description: "Controls dialog visibility.", required: true },
+      { name: "onOpenChange", type: "(open: boolean) => void", description: "Callback for open state changes.", default: "undefined" },
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
     ],
   },
   {
@@ -658,6 +724,7 @@ export function ProgressDemo() {
   )
 }`,
     propsData: [
+<<<<<<< HEAD
       {
         name: "value",
         type: "number",
@@ -670,6 +737,10 @@ export function ProgressDemo() {
         description: "Maximum value.",
         default: "100",
       },
+=======
+      { name: "value", type: "number", description: "Progress value (0-100).", default: "0" },
+      { name: "max", type: "number", description: "Maximum value.", default: "100" },
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
     ],
   },
   {
@@ -726,6 +797,7 @@ export function TextareaDemo() {
   )
 }`,
     propsData: [
+<<<<<<< HEAD
       {
         name: "id",
         type: "string",
@@ -738,6 +810,10 @@ export function TextareaDemo() {
         description: "Placeholder text.",
         default: "",
       },
+=======
+      { name: "id", type: "string", description: "Unique identifier for the textarea.", required: true },
+      { name: "placeholder", type: "string", description: "Placeholder text.", default: "" },
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
     ],
   },
   {
@@ -756,12 +832,16 @@ export function ChatDemo() {
   return <ChatBox header={{ title: "AI Assistant", subtitle: "Powered by DevUI " }} />
 }`,
     propsData: [
+<<<<<<< HEAD
       {
         name: "header",
         type: "{ title: string; subtitle?: string }",
         description: "Header configuration.",
         default: "{ title: '' }",
       },
+=======
+      { name: "header", type: "{ title: string; subtitle?: string }", description: "Header configuration.", default: "{ title: '' }" },
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
     ],
   },
   {
@@ -814,7 +894,11 @@ export function ChatDemo() {
       </div>
     ),
     code: `import { toast, Toaster } from "sonner"
+<<<<<<< HEAD
 import { Button } from "@/components/ui/button"
+=======
+import { Button } from "@/components/ui/button";
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
 
 export function ToastDemo() {
   return (
@@ -827,6 +911,7 @@ export function ToastDemo() {
   )
 }`,
     propsData: [
+<<<<<<< HEAD
       {
         name: "message",
         type: "string",
@@ -839,6 +924,10 @@ export function ToastDemo() {
         description: "Optional description.",
         default: "undefined",
       },
+=======
+      { name: "message", type: "string", description: "Toast message.", required: true },
+      { name: "description", type: "string", description: "Optional description.", default: "undefined" },
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
     ],
   },
   {
@@ -901,6 +990,7 @@ export function SidebarDemo() {
   );
 }`,
     propsData: [
+<<<<<<< HEAD
       {
         name: "items",
         type: "MenuItem[]",
@@ -913,6 +1003,10 @@ export function SidebarDemo() {
         description: "Callback for item clicks.",
         default: "undefined",
       },
+=======
+      { name: "items", type: "MenuItem[]", description: "Navigation items.", required: true },
+      { name: "onItemClick", type: "(item: MenuItem) => void", description: "Callback for item clicks.", default: "undefined" },
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
     ],
   },
   {
@@ -984,12 +1078,16 @@ export function MenuBarDemo() {
   )
 }`,
     propsData: [
+<<<<<<< HEAD
       {
         name: "orientation",
         type: '"horizontal" | "vertical"',
         description: "Menu bar orientation.",
         default: "horizontal",
       },
+=======
+      { name: "orientation", type: '"horizontal" | "vertical"', description: "Menu bar orientation.", default: "horizontal" },
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
     ],
   },
   {
@@ -1064,6 +1162,7 @@ export function DrawerDemo() {
   )
 }`,
     propsData: [
+<<<<<<< HEAD
       {
         name: "open",
         type: "boolean",
@@ -1076,6 +1175,10 @@ export function DrawerDemo() {
         description: "Callback for open state changes.",
         default: "undefined",
       },
+=======
+      { name: "open", type: "boolean", description: "Controls drawer visibility.", required: true },
+      { name: "onOpenChange", type: "(open: boolean) => void", description: "Callback for open state changes.", default: "undefined" },
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
     ],
   },
   {
@@ -1126,6 +1229,7 @@ export function FileUploadDemo() {
   )
 }`,
     propsData: [
+<<<<<<< HEAD
       {
         name: "variant",
         type: '"default" | "compact" | "dropzone"',
@@ -1174,6 +1278,10 @@ export function FileUploadDemo() {
         description: "Show upload progress bar.",
         default: "false",
       },
+=======
+      { name: "variant", type: '"default" | "compact" | "dropzone"', description: "Upload style variant.", default: "default" },
+      { name: "accept", type: "string", description: "Accepted file types.", default: "*/*" },
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
     ],
   },
   {
@@ -1233,6 +1341,7 @@ export function SonnerDemo() {
   )
 }`,
     propsData: [
+<<<<<<< HEAD
       {
         name: "message",
         type: "string",
@@ -1245,6 +1354,10 @@ export function SonnerDemo() {
         description: "Optional description.",
         default: "undefined",
       },
+=======
+      { name: "message", type: "string", description: "Toast message.", required: true },
+      { name: "description", type: "string", description: "Optional description.", default: "undefined" },
+>>>>>>> 1f4d4fa (feat: Feature/ai powered snippet (#177))
     ],
   },
   {
