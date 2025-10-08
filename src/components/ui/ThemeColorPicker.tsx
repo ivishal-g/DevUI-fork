@@ -166,7 +166,10 @@ const ThemeColorPicker = () => {
         </Button>
       </div>
     </div>
+          </div>
+      </div>
+    </div>
   );
-};
+}
 
 export default ThemeColorPicker;
