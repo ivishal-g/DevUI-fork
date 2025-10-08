@@ -134,6 +134,16 @@ const ThemeColorPicker = () => {
     <div className="fixed bottom-4 right-4 z-50">
       <div className="group relative">
         <div className="absolute bottom-full right-0 mb-4 grid grid-cols-5 gap-2 rounded-lg border bg-background/80 p-2 backdrop-blur-md opacity-0 transition-all duration-300 group-hover:opacity-100 group-focus-within:opacity-100">
+    <div className="fixed bottom-4 right-4 sm:bottom-4 sm:right-4 z-50" ref={containerRef}>
+      <div className="relative">
+        <div
+          ref={menuRef}
+          className={`absolute bottom-full ${alignLeft ? 'left-0 right-auto' : 'right-0 left-auto'} mb-3 flex items-center gap-2 rounded-xl border bg-background/90 p-2 backdrop-blur-md shadow-lg transition-all duration-200 origin-bottom-right overflow-visible min-w-max ${alignLeft ? 'translate-x-[4px]' : 'translate-x-[-4px]'}
+            ${open ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}`}
+          role="menu"
+          aria-label="Theme colors"
+          id="theme-color-menu"
+        >
           {themes.map((theme) => (
             <button
               key={theme.name}
